@@ -28,13 +28,22 @@ class FastImage
 	{
 		if ($this->handle) $this->close();
 		
-		$this->handle = fopen($uri, 'r');
+		$host = parse_url($uri, PHP_URL_HOST);
+		$stream_context = @stream_context_create(array(
+													'http' => array(
+														'timeout' => 1,
+														'method' => 'GET',
+														'user_agent' => (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)',
+														'header' => "Referer: http://$host\r\n"
+													)
+												));
+        $this->handle = fopen($uri, 'rb', null, $stream_context);
 	}
 
 
 	public function close()
 	{
-		if ($this->handle)
+		if ($this->handle && is_resource($this->handle))
 		{
 			fclose($this->handle);
 			$this->handle = null;

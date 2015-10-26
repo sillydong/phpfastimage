@@ -81,8 +81,6 @@ class FastImage
 					return $this->type = 'jpeg';
 				case chr(0x89).'P':
 					return $this->type = 'png';
-				case "RI":
-                    return $this->type = 'webp';
 				default:
 					return false;
 			}
@@ -105,9 +103,7 @@ class FastImage
 			case 'bmp':
 				return $this->parseSizeForBMP();
 			case 'jpeg':
-				return $this->parseSizeForJPEG();
-			case 'webp':
-                return $this->parseSizeForWEBP();
+				return $this->parseSizeForJPEG();	    
 		}
 		
 		return null;
@@ -198,13 +194,6 @@ class FastImage
 			}
 		}
 	}
-
-	private function parseSizeForWEBP() {
-		$chars = $this->getChars(30);
-		$result = unpack("C12/S9", $chars);
-
-		return array($result['8'], $result['9']);
-    }
 
 
 	private function getChars($n)

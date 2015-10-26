@@ -224,7 +224,10 @@ class FastImage
 		$result = substr($this->str, $this->strpos, $n);
 		$this->strpos += $n;
 		
-		return $result;
+		if (function_exists("mb_convert_encoding"))
+			return mb_convert_encoding($result, "8BIT", "7BIT");
+		else
+			return $result;
 	}
 
 

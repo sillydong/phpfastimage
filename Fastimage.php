@@ -81,6 +81,8 @@ class FastImage
 					return $this->type = 'jpeg';
 				case chr(0x89).'P':
 					return $this->type = 'png';
+				case "RI":
+					return $this->type = 'webp';
 				default:
 					return false;
 			}
@@ -103,7 +105,9 @@ class FastImage
 			case 'bmp':
 				return $this->parseSizeForBMP();
 			case 'jpeg':
-				return $this->parseSizeForJPEG();	    
+				return $this->parseSizeForJPEG();
+			case 'webp':
+				return $this->parseSizeForWEBP();
 		}
 		
 		return null;
